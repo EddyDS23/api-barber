@@ -6,7 +6,7 @@ from drf_spectacular.openapi import OpenApiTypes
 import drf_spectacular.openapi as openapi
 
 
-from utils.permission import AllowAny
+from backend.utils.permissions import AllowAny
 from .models import Gallery, GalleryCategory
 from .serializers import GalleryPublicSerializer, GalleryCategorySerializer
 
@@ -77,7 +77,7 @@ class GalleryPublicViewSet(viewsets.ReadOnlyModelViewSet):
 # ============================================================
 # ADMIN VIEWS
 # ============================================================
-from utils.permission import IsAdmin
+from backend.utils.permissions import IsAdmin
 from .serializers import GalleryCategoryAdminSerializer, GalleryAdminSerializer
 from drf_spectacular.utils import extend_schema, extend_schema_view
 

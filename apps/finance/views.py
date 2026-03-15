@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
 
-from utils.permission import IsAdmin
+from backend.utils.permissions import IsAdmin
 from .models import FinancialTransaction, TypeTransaction, CategoryTransaction
 from .serializers import (
     FinancialTransactionSerializer,

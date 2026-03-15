@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
-from utils.permission import IsAdmin
+from backend.utils.permissions import IsAdmin
 from .models import Client
 from .serializers import ClientAdminSerializer, ClientCreateSerializer
 

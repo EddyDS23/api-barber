@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser  
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
 
-from utils.permission import AllowAny, IsAdmin
+from backend.utils.permissions import AllowAny, IsAdmin
 from .models import Barber, Specialty, BarberStatus
 from .serializers import (
     BarberPublicSerializer,

@@ -52,7 +52,7 @@ urlpatterns = [
     path('api/admin/services/', include('apps.services.urls_admin')),
 
     #Clientes
-    path('api/admin/clients', include('apps.clients.urls_admin')),
+    path('api/admin/clients/', include('apps.clients.urls_admin')),
 
     #Galeria
     path('api/admin/gallery/', include('apps.gallery.urls_admin')),
