@@ -15,7 +15,7 @@ from backend.utils.permissions import IsAdmin
 from apps.appointments.models import Appointment, AppointmentService
 from apps.barbers.models import Barber
 from apps.finance.models import FinancialTransaction, TypeTransaction
-from apps.core.views_dashboard import get_month_ranges
+from apps.core.utils import get_month_ranges
 
 REPORTS_TAG = 'Admin - Reports'
 

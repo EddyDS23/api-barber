@@ -17,61 +17,7 @@ from apps.appointments.models import Appointment, StatusAppointment
 from apps.finance.models import FinancialTransaction, TypeTransaction
 from apps.barbers.models import Barber
 
-
-# ─────────────────────────────────────────────────────────────
-#  HELPER: calcular porcentaje de cambio entre dos períodos
-# ─────────────────────────────────────────────────────────────
-def calc_percent_change(current: Decimal, previous: Decimal) -> int:
-    """
-    Recibe el valor del período actual y el anterior.
-    Retorna el % de cambio como entero (ej: +12, -5, 0).
-
-    Lógica:
-      - Si el valor anterior es 0 y el actual > 0  → retorna 100 (subió todo)
-      - Si ambos son 0                             → retorna 0
-      - En cualquier otro caso                     → fórmula estándar
-    """
-    if previous == 0:
-        return 100 if current > 0 else 0
-    change = ((current - previous) / previous) * 100
-    return int(round(change))
-
-
-# ─────────────────────────────────────────────────────────────
-#  HELPER: obtener rango de fechas del mes actual y anterior
-# ─────────────────────────────────────────────────────────────
-def get_month_ranges():
-    """
-    Retorna (inicio_mes_actual, fin_mes_actual,
-              inicio_mes_anterior, fin_mes_anterior)
-    como objetos date.
-
-    Ejemplo (si hoy es 15/06/2024):
-      → current: 2024-06-01 .. 2024-06-30
-      → previous: 2024-05-01 .. 2024-05-31
-    """
-    today = date.today()
-
-    # Primer día del mes actual
-    first_current = today.replace(day=1)
-
-    # Último día del mes actual  (primer día del siguiente mes - 1 día)
-    if today.month == 12:
-        first_next = today.replace(year=today.year + 1, month=1, day=1)
-    else:
-        first_next = today.replace(month=today.month + 1, day=1)
-    last_current = first_next.replace(day=1) - __import__('datetime').timedelta(days=1)
-
-    # Primer día del mes anterior
-    if today.month == 1:
-        first_previous = today.replace(year=today.year - 1, month=12, day=1)
-    else:
-        first_previous = today.replace(month=today.month - 1, day=1)
-
-    # Último día del mes anterior = día anterior al primer día del mes actual
-    last_previous = first_current - __import__('datetime').timedelta(days=1)
-
-    return first_current, last_current, first_previous, last_previous
+from apps.core.utils import calc_percent_change, get_month_ranges
 
 
 # ═════════════════════════════════════════════════════════════

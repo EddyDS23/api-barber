@@ -17,7 +17,7 @@ from .serializers import (
     TypeTransactionSerializer,
     CategoryTransactionSerializer,
 )
-from apps.core.views_dashboard import calc_percent_change, get_month_ranges
+from apps.core.utils import calc_percent_change, get_month_ranges
 
 FINANCE_TAG = 'Admin - Finance'
 FINANCE_CATEGORY_TAG = 'Admin - Category - Finance'
