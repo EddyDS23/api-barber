@@ -288,7 +288,7 @@ class AgendaChangeStatusView(APIView):
 #  ENDPOINT 4: POST /api/admin/agenda/quick-appointment/
 # ═════════════════════════════════════════════════════════════
 
-@extend_schema(tags=[AGENDA_TAG], summary='Crear cita rápida desde la agenda',request=QuickAppointmentSerializer, responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT},)
+@extend_schema(tags=[AGENDA_TAG], summary='Crear cita rápida desde la agenda',request=QuickAppointmentSerializer, responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT})
 class AgendaQuickAppointmentView(APIView):
     """
     POST /api/admin/agenda/quick-appointment/
