@@ -77,7 +77,7 @@ class ServiceAdminSerializer(serializers.ModelSerializer):
     barber_ids = serializers.ListField(
         child=serializers.IntegerField(),
         write_only=True,
-        required=False    )
+        required=False)
     image = serializers.SerializerMethodField()
 
     class Meta:
