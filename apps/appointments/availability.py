@@ -65,7 +65,7 @@ def is_slot_available(date, slot_time, total_duration, barber_id=None):
     ) 
 
     if barber_id:
-        appointments = appointments.objects.filter(barber_id=barber_id)
+        appointments = appointments.filter(barber_id=barber_id)
     
     for appointment in appointments:
         apt_start = datetime.combine(date, appointment.time)
