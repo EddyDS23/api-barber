@@ -7,7 +7,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 from drf_spectacular.utils import extend_schema
 
-from backend.utils.permissions import IsAdmin
+from utils.permissions import IsAdmin
 from .models import BusinessSettings, BusinessHours, Holiday, NotificationSettings
 from .serializers import (
     BusinessInfoSerializer,

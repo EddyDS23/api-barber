@@ -12,7 +12,7 @@ from rest_framework import status
 
 from drf_spectacular.utils import extend_schema
 
-from backend.utils.permissions import IsAdmin
+from utils.permissions import IsAdmin
 from apps.appointments.models import Appointment, StatusAppointment
 from apps.finance.models import FinancialTransaction, TypeTransaction
 from apps.barbers.models import Barber

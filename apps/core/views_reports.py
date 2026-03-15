@@ -11,7 +11,7 @@ from rest_framework import status
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 
-from backend.utils.permissions import IsAdmin
+from utils.permissions import IsAdmin
 from apps.appointments.models import Appointment, AppointmentService
 from apps.barbers.models import Barber
 from apps.finance.models import FinancialTransaction, TypeTransaction

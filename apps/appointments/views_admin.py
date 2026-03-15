@@ -8,7 +8,7 @@ from rest_framework import status
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 
-from backend.utils.permissions import IsAdmin
+from utils.permissions import IsAdmin
 from apps.barbers.models import Barber
 from apps.core.models import BusinessSettings, BusinessHours
 from .models import Appointment, StatusAppointment

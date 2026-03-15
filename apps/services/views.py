@@ -5,7 +5,7 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiResponse
 
 
-from backend.utils.permissions import AllowAny, IsAdmin
+from utils.permissions import AllowAny, IsAdmin
 from .models import Service, ServiceType
 from .serializers import ServicePublicSerializer, ServiceAdminSerializer, ServiceTypeSerializer, ServiceTypeAdminSerializer
 

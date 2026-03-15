@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 
-from backend.utils.permissions import AllowAny
+from utils.permissions import AllowAny
 from .models import Appointment
 from .serializers import AvailabilitySerializer, AppointmentBookingSerializer, AppointmentStatusSerializer
 from .availability import get_available_slots
