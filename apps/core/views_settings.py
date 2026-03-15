@@ -6,6 +6,8 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 
 from drf_spectacular.utils import extend_schema
+from drf_spectacular.openapi import OpenApiTypes
+
 
 from utils.permissions import IsAdmin
 from .models import BusinessSettings, BusinessHours, Holiday, NotificationSettings
@@ -63,7 +65,8 @@ class BusinessInfoView(APIView):
 
     @extend_schema(
         tags=[SETTINGS_TAG],
-        summary='Obtener información general del negocio'
+        summary='Obtener información general del negocio',
+        responses={200: OpenApiTypes.OBJECT}
     )
     def get(self, request):
         settings   = get_business_settings()
@@ -73,6 +76,7 @@ class BusinessInfoView(APIView):
     @extend_schema(
         tags=[SETTINGS_TAG],
         summary='Actualizar información general del negocio',
+        responses= {200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT},
         request=BusinessInfoSerializer
     )
     def patch(self, request):
@@ -95,6 +99,7 @@ class UploadLogoView(APIView):
     @extend_schema(
         tags=[SETTINGS_TAG],
         summary='Subir o reemplazar el logo del negocio',
+        responses= {200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT},
         request={
             'multipart/form-data': {
                 'type': 'object',
@@ -161,7 +166,8 @@ class BookingRulesView(APIView):
 
     @extend_schema(
         tags=[SETTINGS_RULES_TAG],
-        summary='Obtener reglas de reservas y agendamiento'
+        summary='Obtener reglas de reservas y agendamiento',
+        responses={200: OpenApiTypes.OBJECT},
     )
     def get(self, request):
         settings   = get_business_settings()
@@ -171,6 +177,7 @@ class BookingRulesView(APIView):
     @extend_schema(
         tags=[SETTINGS_RULES_TAG],
         summary='Actualizar reglas de reservas y agendamiento',
+        responses={200: OpenApiTypes.OBJECT},
         request=BookingRulesSerializer
     )
     def patch(self, request):
@@ -195,7 +202,8 @@ class BusinessHoursView(APIView):
 
     @extend_schema(
         tags=[SETTINGS_HOURS_TAG],
-        summary='Obtener horarios de operación de la semana'
+        summary='Obtener horarios de operación de la semana',
+        responses={200: OpenApiTypes.OBJECT}
     )
     def get(self, request):
         hours      = BusinessHours.objects.all().order_by('day_of_week')
@@ -205,6 +213,7 @@ class BusinessHoursView(APIView):
     @extend_schema(
         tags=[SETTINGS_HOURS_TAG],
         summary='Actualizar horarios de operación de toda la semana',
+        responses={200: OpenApiTypes.OBJECT},
         request=BusinessHoursSerializer(many=True)
     )
     def put(self, request):
@@ -259,6 +268,7 @@ class BusinessHoursDayView(APIView):
     @extend_schema(
         tags=[SETTINGS_HOURS_TAG],
         summary='Actualizar horario de un día específico de la semana',
+        responses={200: OpenApiTypes.OBJECT, 404: OpenApiTypes.OBJECT},
         request=BusinessHoursSerializer
     )
     def patch(self, request, day_of_week):
@@ -290,7 +300,8 @@ class HolidaysView(APIView):
 
     @extend_schema(
         tags=[SETTINGS_HOLIDAY_TAG],
-        summary='Listar todos los días feriados registrados'
+        summary='Listar todos los días feriados registrados',
+        responses={200: OpenApiTypes.OBJECT}
     )
     def get(self, request):
         holidays   = Holiday.objects.all().order_by('date')
@@ -300,6 +311,7 @@ class HolidaysView(APIView):
     @extend_schema(
         tags=[SETTINGS_HOLIDAY_TAG],
         summary='Registrar un nuevo día feriado',
+        responses={201: OpenApiTypes.OBJECT},
         request=HolidaySerializer
     )
     def post(self, request):
@@ -318,7 +330,8 @@ class HolidayDeleteView(APIView):
 
     @extend_schema(
         tags=[SETTINGS_HOLIDAY_TAG],
-        summary='Eliminar un día feriado por ID'
+        summary='Eliminar un día feriado por ID',
+        responses={200: OpenApiTypes.OBJECT, 404: OpenApiTypes.OBJECT}
     )
     def delete(self, request, pk):
         try:
@@ -349,7 +362,8 @@ class NotificationSettingsView(APIView):
 
     @extend_schema(
         tags=[SETTINGS_NOTIFICATION_TAG],
-        summary='Obtener configuración de notificaciones automáticas'
+        summary='Obtener configuración de notificaciones automáticas',
+        responses={200: OpenApiTypes.OBJECT}
     )
     def get(self, request):
         settings   = get_notification_settings()
@@ -359,6 +373,7 @@ class NotificationSettingsView(APIView):
     @extend_schema(
         tags=[SETTINGS_NOTIFICATION_TAG],
         summary='Actualizar configuración de notificaciones automáticas',
+        responses={200: OpenApiTypes.OBJECT},
         request=NotificationSettingsSerializer
     )
     def patch(self, request):

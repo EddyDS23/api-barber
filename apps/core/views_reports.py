@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.openapi import OpenApiTypes
 
 from utils.permissions import IsAdmin
 from apps.appointments.models import Appointment, AppointmentService
@@ -29,7 +30,8 @@ DAY_NAMES = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 
 @extend_schema(
     tags=[REPORTS_TAG],
-    summary='Gráfica de ingresos',
+    summary='Resumen de finanzas',
+    responses={200: OpenApiTypes.OBJECT},
     parameters=[
         OpenApiParameter(
             name='period',
@@ -211,7 +213,8 @@ class ReportIncomeChartView(APIView):
 
 @extend_schema(
     tags=[REPORTS_TAG],
-    summary='Top 3 servicios más solicitados del mes'
+    summary='Top 3 servicios más solicitados del mes',
+    responses={200: OpenApiTypes.OBJECT}
 )
 class ReportTopServicesView(APIView):
     """
@@ -269,7 +272,8 @@ class ReportTopServicesView(APIView):
 
 @extend_schema(
     tags=[REPORTS_TAG],
-    summary='Top 3 barberos con más citas completadas del mes'
+    summary='Top 3 barberos con más citas completadas del mes',
+    responses={200: OpenApiTypes.OBJECT}
 )
 class ReportTopBarbersView(APIView):
     """
@@ -317,7 +321,8 @@ class ReportTopBarbersView(APIView):
 
 @extend_schema(
     tags=[REPORTS_TAG],
-    summary='Heatmap de ocupación por día y hora del mes actual'
+    summary='Heatmap de ocupación por día y hora del mes actual',
+    responses={200: OpenApiTypes.OBJECT}
 )
 class ReportOccupancyHeatmapView(APIView):
     """

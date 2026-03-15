@@ -4,6 +4,7 @@ from .models import ServiceType, ServiceBarber
 from apps.barbers.models import Barber
 from apps.barbers.serializers import BarberPublicSerializer
 
+from drf_spectacular.utils import extend_schema_field
 
 
 # ============================================
@@ -41,6 +42,7 @@ class ServicePublicSerializer(serializers.ModelSerializer):
             'service_type'
         ]
 
+    @extend_schema_field(serializers.URLField(allow_null=True))
     def get_image(self,obj):
         if obj.image_url:
             return obj.image_url.url
@@ -104,7 +106,7 @@ class ServiceAdminSerializer(serializers.ModelSerializer):
             'image_url': {'write_only':True, 'required':False}
         }
 
-
+    @extend_schema_field(serializers.URLField(allow_null=True))
     def get_image(self,obj):
         if obj.image_url:
             return obj.image_url.url

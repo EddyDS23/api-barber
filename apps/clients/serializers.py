@@ -1,6 +1,10 @@
 from rest_framework import serializers
 from .models import Client
 
+from drf_spectacular.utils import extend_schema_field
+
+
+
 class ClientAdminSerializer(serializers.ModelSerializer):
     """
     Serializer completo para gestión de clientes.
@@ -26,6 +30,7 @@ class ClientAdminSerializer(serializers.ModelSerializer):
 
         read_only_fields = ['id', 'created_at', 'updated_at']
 
+    @extend_schema_field(serializers.DateField(allow_null=True))
     def get_last_visit(self, obj):
         """
         Fecha de la última cita COMPLETADA del cliente.
@@ -38,6 +43,7 @@ class ClientAdminSerializer(serializers.ModelSerializer):
             return str(last_appointment.date)
         return None
 
+    @extend_schema_field(serializers.CharField())
     def get_total_spent(self, obj):
         """
         Suma total de todas las citas COMPLETADAS del cliente.

@@ -3,6 +3,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.openapi import OpenApiTypes
 
 from utils.permissions import AllowAny
 from .models import Appointment
@@ -25,6 +26,7 @@ class AvailabilityView(APIView):
             Si se especifica barber_id, filtra por ese barbero.
             Si no, muestra slots donde al menos un barbero está disponible.
         ''',
+        responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT},
         parameters=[
             OpenApiParameter(
                 name='date',
@@ -99,6 +101,7 @@ class BookAppointmentView(APIView):
             se asigna automáticamente el menos ocupado del día.
         ''',
         request=AppointmentBookingSerializer,
+        responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT}
     )
     def post(self, request):
         serializer = AppointmentBookingSerializer(data=request.data)
@@ -151,6 +154,7 @@ class AppointmentStatusView(APIView):
             y recibe el estado actual de su cita.
             No requiere autenticación.
         ''',
+        responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT},
         parameters=[
             OpenApiParameter(
                 name='code',

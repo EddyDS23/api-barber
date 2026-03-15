@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.openapi import OpenApiTypes
 
 from utils.permissions import IsAdmin
 from .models import FinancialTransaction, TypeTransaction, CategoryTransaction
@@ -28,7 +29,7 @@ FINANCE_TYPE_TAG = 'Admin - Type - Finance'
 #  ENDPOINT: /api/admin/finance/summary/
 # ═════════════════════════════════════════════════════════════
 
-@extend_schema(tags=[FINANCE_TAG], summary='Resumen de finanzas')
+@extend_schema(tags=[FINANCE_TAG], summary='Resumen de finanzas',responses={200: OpenApiTypes.OBJECT})
 class FinanceSummaryView(APIView):
     """
     GET /api/admin/finance/summary/

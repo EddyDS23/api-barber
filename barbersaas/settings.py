@@ -198,6 +198,14 @@ SPECTACULAR_SETTINGS = {
         {'name': 'Admin - Services', 'description': 'Servicios CRUD'},
         {'name': 'Admin - Barbers', 'description': 'Equipo CRUD'},
         {'name': 'Admin - Settings', 'description': 'Configuraciones'},
+        {'name': 'Admin - Rules - Settings', 'description': 'Reglas de reservas'},
+        {'name': 'Admin - Hours - Settings', 'description': 'Horarios del negocio'},
+        {'name': 'Admin - Holiday - Settings', 'description': 'Días feriados'},
+        {'name': 'Admin - Notification - Settings', 'description': 'Notificaciones'},
+        {'name': 'Admin - Barbers - Specialties', 'description': 'Especialidades'},
+        {'name': 'Admin - Category - Gallery', 'description': 'Categorías de galería'},
+        {'name': 'Admin - Category - Finance', 'description': 'Categorías de finanzas'},
+        {'name': 'Admin - Type - Finance', 'description': 'Tipos de transacción'},
     ],
 
 }

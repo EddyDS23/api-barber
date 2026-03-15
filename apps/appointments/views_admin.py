@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.openapi import OpenApiTypes
 
 from utils.permissions import IsAdmin
 from apps.barbers.models import Barber
@@ -77,6 +78,7 @@ def get_day_slots(target_date: date) -> list:
 @extend_schema(
     tags=[AGENDA_TAG],
     summary='Matriz de agenda del día',
+    responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT},
     parameters=[
         OpenApiParameter(
             name='date',
@@ -210,7 +212,7 @@ class AgendaScheduleView(APIView):
 #  ENDPOINT 2: GET /api/admin/agenda/appointments/{id}/
 # ═════════════════════════════════════════════════════════════
 
-@extend_schema(tags=[AGENDA_TAG], summary='Detalle de cita')
+@extend_schema(tags=[AGENDA_TAG], summary='Detalle de cita', responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT})
 class AgendaAppointmentDetailView(APIView):
     """
     GET /api/admin/agenda/appointments/{id}/
@@ -242,7 +244,7 @@ class AgendaAppointmentDetailView(APIView):
 #  ENDPOINT 3: PATCH /api/admin/agenda/appointments/{id}/change-status/
 # ═════════════════════════════════════════════════════════════
 
-@extend_schema(tags=[AGENDA_TAG], summary='Cambiar estado de una cita',request=ChangeStatusSerializer)
+@extend_schema(tags=[AGENDA_TAG], summary='Cambiar estado de una cita',request=ChangeStatusSerializer, responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT})
 class AgendaChangeStatusView(APIView):
     """
     PATCH /api/admin/agenda/appointments/{id}/change-status/
@@ -286,7 +288,7 @@ class AgendaChangeStatusView(APIView):
 #  ENDPOINT 4: POST /api/admin/agenda/quick-appointment/
 # ═════════════════════════════════════════════════════════════
 
-@extend_schema(tags=[AGENDA_TAG], summary='Crear cita rápida desde la agenda',request=QuickAppointmentSerializer)
+@extend_schema(tags=[AGENDA_TAG], summary='Crear cita rápida desde la agenda',request=QuickAppointmentSerializer, responses={200: OpenApiTypes.OBJECT, 400: OpenApiTypes.OBJECT},)
 class AgendaQuickAppointmentView(APIView):
     """
     POST /api/admin/agenda/quick-appointment/

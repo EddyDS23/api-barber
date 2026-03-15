@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema, OpenApiResponse 
+from drf_spectacular.openapi import OpenApiTypes
 
 from .serializers import LoginSerializer, UserSerializer
 # Create your views here.
@@ -66,12 +67,12 @@ class LogoutView(APIView):
         tags=['Auth'],
         summary='Cerrar sesión',
         description='Invalida el refresh token. El frontend debe eliminar el access token localmente.',
+        request=None,
         responses={
-            200: OpenApiResponse(description='Sesión cerrada correctamente'),
-            400: OpenApiResponse(description='Token inválido o faltante'),
+            200: OpenApiTypes.OBJECT,
+            400: OpenApiTypes.OBJECT,
         }
     )
-
     def post(self,request):
 
         try:

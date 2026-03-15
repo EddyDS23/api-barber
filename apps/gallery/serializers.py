@@ -2,6 +2,7 @@ from rest_framework import serializers
 from apps.barbers.models import Barber
 from .models import Gallery, GalleryCategory
 
+from drf_spectacular.utils import extend_schema_field
 
 # ============================================================
 # SERIALIZERS PUBLICOS
@@ -41,6 +42,7 @@ class GalleryPublicSerializer(serializers.ModelSerializer):
             'display_order'
         ]
 
+    @extend_schema_field(serializers.URLField(allow_null=True))
     def get_image(self,obj):
         if obj.image_url:
             return obj.image_url.url
@@ -60,6 +62,7 @@ class GalleryCategoryAdminSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'slug', 'description', 'display_order', 'image_count', 'created_at']
         read_only_fields = ['id', 'created_at']
 
+    @extend_schema_field(serializers.IntegerField())
     def get_image_count(self, obj):
         return obj.images.filter(is_active=True).count()
 
@@ -85,11 +88,13 @@ class GalleryAdminSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'image', 'created_at']
 
+    @extend_schema_field(serializers.URLField(allow_null=True))
     def get_image(self, obj):
         if obj.image_url:
             return obj.image_url.url
         return None
 
+    @extend_schema_field(serializers.DictField(allow_null=True))
     def get_barber_detail(self, obj):
         if obj.barber:
             return {'id': obj.barber.id, 'name': obj.barber.name}

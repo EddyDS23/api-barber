@@ -4,6 +4,8 @@ from .models import (
     Barber, Specialty, BarberStatus, BarberSpecialty
 )
 
+from drf_spectacular.utils import extend_schema_field
+
 
 color_validator = RegexValidator(
     regex=r'^#[0-9A-Fa-f]{6}$',
@@ -18,6 +20,7 @@ class SpecialtySerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialty
         fields = ['id','name','description']
+
 
 class BarberPublicSerializer(serializers.ModelSerializer):
     """
@@ -42,7 +45,8 @@ class BarberPublicSerializer(serializers.ModelSerializer):
             'status_name',
             'specialties',
         ] 
-
+        
+    @extend_schema_field(serializers.URLField(allow_null=True))    
     def get_avatar_url(self, obj):
         if obj.avatar:
             return obj.avatar.url
@@ -64,7 +68,6 @@ class BarberStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = BarberStatus
         fields = ['id','name','color_code','description']
-
 
 class BarberAdminSerializer(serializers.ModelSerializer):
 
@@ -104,6 +107,8 @@ class BarberAdminSerializer(serializers.ModelSerializer):
         ]
         read_only_fields=['id','created_at','updated_at']
     
+
+    @extend_schema_field(serializers.URLField(allow_null=True))
     def get_avatar_url(self,obj):
         if obj.avatar:
             return obj.avatar.url

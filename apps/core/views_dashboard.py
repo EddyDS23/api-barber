@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from drf_spectacular.utils import extend_schema
+from drf_spectacular.openapi import OpenApiTypes
 
 from utils.permissions import IsAdmin
 from apps.appointments.models import Appointment, StatusAppointment
@@ -35,7 +36,7 @@ class DashboardStatsView(APIView):
     """
     permission_classes = [IsAdmin]
 
-    @extend_schema(tags=['Admin - Dashboard'])
+    @extend_schema(tags=['Admin - Dashboard'], summary='KPI Cards del dashboard', responses={200: OpenApiTypes.OBJECT})
     def get(self, request):
         today = date.today()
         first_current, last_current, first_previous, last_previous = get_month_ranges()
@@ -138,7 +139,7 @@ class DashboardWeeklyPerformanceView(APIView):
     # Python: 0=Lunes, 1=Martes, ... 6=Domingo
     DAY_NAMES = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom']
 
-    @extend_schema(tags=['Admin - Dashboard'])
+    @extend_schema(tags=['Admin - Dashboard'], summary='Rendimiento semanal', responses={200: OpenApiTypes.OBJECT})
     def get(self, request):
         from datetime import timedelta
 
@@ -216,7 +217,7 @@ class DashboardUpcomingAppointmentsView(APIView):
     """
     permission_classes = [IsAdmin]
 
-    @extend_schema(tags=['Admin - Dashboard'])
+    @extend_schema(tags=['Admin - Dashboard'], summary='Próximas citas del día', responses={200: OpenApiTypes.OBJECT})
     def get(self, request):
         try:
             limit = min(int(request.query_params.get('limit', 4)), 4)

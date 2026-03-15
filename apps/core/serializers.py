@@ -3,7 +3,7 @@
 from rest_framework import serializers
 from .models import BusinessSettings, BusinessHours, Holiday, NotificationSettings
 
-
+from drf_spectacular.utils import extend_schema_field
 # ─────────────────────────────────────────────────────────────
 #  Apartado 1: Información General
 # ─────────────────────────────────────────────────────────────
@@ -28,6 +28,7 @@ class BusinessInfoSerializer(serializers.ModelSerializer):
         # logo_url no se edita desde este endpoint, solo desde upload-logo
         read_only_fields = ['logo_url']
 
+    @extend_schema_field(serializers.URLField(allow_null=True))
     def get_logo_url(self, obj):
         """Retorna la URL completa de Cloudinary o null si no hay logo."""
         if obj.logo_url:
@@ -112,7 +113,7 @@ class BusinessHoursSerializer(serializers.ModelSerializer):
     Schema DB: day_of_week → 0=Domingo, 1=Lunes ... 6=Sábado
     """
     # Nombre legible del día para el frontend (solo lectura)
-    day_name = serializers.SerializerMethodField(read_only=True)
+    day_name = serializers.SerializerMethodField()
 
     DAY_NAMES = {
         0: 'Domingo', 1: 'Lunes', 2: 'Martes',
@@ -129,8 +130,10 @@ class BusinessHoursSerializer(serializers.ModelSerializer):
             'opening_time',
             'closing_time',
         ]
+        read_only_fields = ['id', 'day_of_week', 'day_name'] 
 
-    def get_day_name(self, obj):
+    @extend_schema_field(serializers.CharField())
+    def get_day_name(self, obj):    
         return self.DAY_NAMES.get(obj.day_of_week, '')
 
     def validate(self, attrs):
