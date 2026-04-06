@@ -6,7 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema, OpenApiResponse 
 from drf_spectacular.openapi import OpenApiTypes
 
-from .serializers import LoginSerializer, UserSerializer
+from .serializers import LoginSerializer, UserSerializer, UserUpdateSerializer
 # Create your views here.
 
 class LoginView(APIView):
@@ -124,3 +124,16 @@ class UserProfileView(APIView):
     def get(self,request):
         serializer = UserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @extend_schema(
+    tags=['Auth'],
+    summary='Actualizar perfil del usuario',
+    request=UserUpdateSerializer,
+    responses={200: UserSerializer}
+    )
+
+    def patch(self, request):
+        serializer = UserUpdateSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(UserSerializer(request.user).data, status=status.HTTP_200_OK)

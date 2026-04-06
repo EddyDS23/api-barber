@@ -10,6 +10,7 @@ from .views_settings import (
     HolidaysView,
     HolidayDeleteView,
     NotificationSettingsView,
+    PublicBusinessInfoView
 )
 
 """
@@ -51,4 +52,7 @@ urlpatterns = [
 
     # Apartado 4: Notificaciones
     path('notifications/',  NotificationSettingsView.as_view(), name='settings-notifications'),
+
+    #Apartado 5: Informacion del negocio publico
+    path('public/', PublicBusinessInfoView.as_view(), name='public-business-info'),
 ]

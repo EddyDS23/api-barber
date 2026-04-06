@@ -43,6 +43,9 @@ urlpatterns = [
     #Citas
     path('api/public/appointments/', include('apps.appointments.urls')),
 
+    #Informacion De Negocio
+    path('api/public/settings/', include('apps.core.urls_settings')),
+
     #-- Endpoints Admin
 
     #Barberos

@@ -9,7 +9,7 @@ from drf_spectacular.utils import extend_schema
 from drf_spectacular.openapi import OpenApiTypes
 
 
-from utils.permissions import IsAdmin
+from utils.permissions import IsAdmin, AllowAny
 from .models import BusinessSettings, BusinessHours, Holiday, NotificationSettings
 from .serializers import (
     BusinessInfoSerializer,
@@ -385,3 +385,18 @@ class NotificationSettingsView(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class PublicBusinessInfoView(APIView):
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        tags=['Public - Settings'],
+        summary='Información pública del negocio',
+        responses={200: BusinessInfoSerializer}
+    )
+    def get(self, request):
+        settings = get_business_settings()
+        serializer = BusinessInfoSerializer(settings)
+        return Response(serializer.data)
