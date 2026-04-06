@@ -280,7 +280,8 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 
 # Resend
-RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
-FROM_EMAIL = os.getenv('FROM_EMAIL', 'reservas@tubarberia.com')
+BREVO_API_KEY = os.getenv('BREVO_API_KEY', '')
+FROM_EMAIL    = os.getenv('FROM_EMAIL', 'noreply@barbersaas.com')
+FROM_NAME     = os.getenv('FROM_NAME', 'Mi Barbería')
 BUSINESS_NAME = os.getenv('BUSINESS_NAME', 'Mi Barbería')
 BUSINESS_MAPS_URL = os.getenv('BUSINESS_MAPS_URL', 'https://maps.google.com')

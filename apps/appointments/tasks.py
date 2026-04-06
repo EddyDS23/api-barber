@@ -1,6 +1,11 @@
-import resend
+
+import sib_api_v3_sdk
+from sib_api_v3_sdk.rest import ApiException
+
 from celery import shared_task
 from django.conf import settings
+
+
 
 def _build_email_html(data: dict) -> str:
     """
@@ -212,10 +217,6 @@ def _build_email_html(data: dict) -> str:
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=60)
 def send_confirmation_email(self, appointment_id: int):
-    """
-    Tarea Celery: envía correo de confirmación al cliente.
-    Se reintenta hasta 3 veces si falla (ej. Resend caído).
-    """
     from apps.appointments.models import Appointment
     from apps.core.models import BusinessSettings
 
@@ -229,11 +230,9 @@ def send_confirmation_email(self, appointment_id: int):
     except Appointment.DoesNotExist:
         return {'error': f'Appointment {appointment_id} not found'}
 
-    # Solo enviar si tiene email
     if not appt.client.email:
         return {'skipped': 'No client email'}
 
-    # Datos del negocio
     try:
         biz = BusinessSettings.objects.get(id=1)
         cancellation_hours = biz.cancellation_hours_before
@@ -242,7 +241,6 @@ def send_confirmation_email(self, appointment_id: int):
         cancellation_hours = 24
         business_name = settings.BUSINESS_NAME
 
-    # Armar datos del correo
     services = [
         ap_srv.service.name
         for ap_srv in appt.appointmentservice_set.all()
@@ -251,31 +249,38 @@ def send_confirmation_email(self, appointment_id: int):
     booking_id = f'BK-{appt.id:04d}'
 
     data = {
-        'booking_id':          booking_id,
-        'client_name':         appt.client.full_name,
-        'services':            services,
-        'barber':              appt.barber.name,
-        'date':                appt.date.strftime('%d de %B de %Y'),
-        'time':                appt.time.strftime('%H:%M'),
-        'total_amount':        f'{appt.total_amount:.2f}',
-        'maps_url':            settings.BUSINESS_MAPS_URL,
-        'cancellation_hours':  cancellation_hours,
-        'business_name':       business_name,
+        'booking_id':         booking_id,
+        'client_name':        appt.client.full_name,
+        'services':           services,
+        'barber':             appt.barber.name,
+        'date':               appt.date.strftime('%d de %B de %Y'),
+        'time':               appt.time.strftime('%H:%M'),
+        'total_amount':       f'{appt.total_amount:.2f}',
+        'maps_url':           settings.BUSINESS_MAPS_URL,
+        'cancellation_hours': cancellation_hours,
+        'business_name':      business_name,
     }
 
     html_content = _build_email_html(data)
 
     try:
-        resend.api_key = settings.RESEND_API_KEY
+        configuration = sib_api_v3_sdk.Configuration()
+        configuration.api_key['api-key'] = settings.BREVO_API_KEY
 
-        resend.Emails.send({
-            'from':    settings.FROM_EMAIL,
-            'to':      "carrilloedgar408@gmail.com",
-            'subject': f'✂️ Reserva confirmada #{booking_id} — {business_name}',
-            'html':    html_content,
-        })
+        api_instance = sib_api_v3_sdk.TransactionalEmailsApi(
+            sib_api_v3_sdk.ApiClient(configuration)
+        )
+
+        send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+            to=[{'email': appt.client.email, 'name': appt.client.full_name}],
+            sender={'email': settings.FROM_EMAIL, 'name': settings.FROM_NAME},
+            subject=f'✂️ Reserva confirmada #{booking_id} — {business_name}',
+            html_content=html_content,
+        )
+
+        api_instance.send_transac_email(send_smtp_email)
 
         return {'sent': True, 'to': appt.client.email, 'booking_id': booking_id}
 
-    except Exception as exc:
+    except ApiException as exc:
         raise self.retry(exc=exc)
