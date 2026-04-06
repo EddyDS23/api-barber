@@ -9,6 +9,7 @@ from utils.permissions import AllowAny
 from .models import Appointment
 from .serializers import AvailabilitySerializer, AppointmentBookingSerializer, AppointmentStatusSerializer
 from .availability import get_available_slots
+from .tasks import send_confirmation_email
 
 
 
@@ -113,6 +114,10 @@ class BookAppointmentView(APIView):
             )
 
         appointment = serializer.save()
+
+        if appointment.client.email:
+            send_confirmation_email.delay(appointment.id)
+
 
         # Construir respuesta con datos de la cita creada
         return Response({

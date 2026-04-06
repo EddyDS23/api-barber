@@ -19,4 +19,7 @@ COPY init.sql /app/init.sql
 
 EXPOSE 8000
 
+COPY . .
+
+RUN chmod +x entrypoint.dev.sh
 CMD ["./entrypoint.dev.sh"]

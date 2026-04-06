@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'drf_spectacular',
+    'django_celery_results',
     'apps.barbers',
     'apps.services',
     'apps.clients',
@@ -271,3 +272,15 @@ cloudinary.config(
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+#Celery
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+
+# Resend
+RESEND_API_KEY = os.getenv('RESEND_API_KEY', '')
+FROM_EMAIL = os.getenv('FROM_EMAIL', 'reservas@tubarberia.com')
+BUSINESS_NAME = os.getenv('BUSINESS_NAME', 'Mi Barbería')
+BUSINESS_MAPS_URL = os.getenv('BUSINESS_MAPS_URL', 'https://maps.google.com')

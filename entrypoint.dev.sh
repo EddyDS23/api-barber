@@ -8,19 +8,19 @@ echo "Aplicando migraciones..."
 python manage.py migrate
 
 
-echo "Ejecutando init.sql solo si es primera vez..."
-TABLE_EXISTS=$(PGPASSWORD=$POSTGRES_PASSWORD psql \
-  -h db -U $POSTGRES_USER -d $POSTGRES_DB \
-  -tAc "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_name='barbers';")
+#echo "Ejecutando init.sql solo si es primera vez..."
+#TABLE_EXISTS=$(PGPASSWORD=$POSTGRES_PASSWORD psql \
+#  -h db -U $POSTGRES_USER -d $POSTGRES_DB \
+#  -tAc "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public' AND table_name='barbers';")
 
-if [ "$TABLE_EXISTS" = "0" ]; then
-  echo "Primera vez: aplicando schema..."
+#if [ "$TABLE_EXISTS" < "22" ]; then
+echo "Primera vez: aplicando schema..."
   PGPASSWORD=$POSTGRES_PASSWORD psql \
-    -h db -U $POSTGRES_USER -d $POSTGRES_DB \
-    -f /app/init.sql
-else
-  echo "Schema ya existe, omitiendo init.sql"
-fi
+  -h db -U $POSTGRES_USER -d $POSTGRES_DB \
+  -f /app/init.sql
+#else
+#  echo "Schema ya existe, omitiendo init.sql"
+#fi
 
 echo "Creando superusuario si no existe..."
 python manage.py shell -c "
